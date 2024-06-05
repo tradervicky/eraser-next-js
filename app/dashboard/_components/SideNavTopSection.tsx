@@ -18,7 +18,7 @@ export interface TEAM {
   _id: string;
 }
 
-const SideNavTopSection = ({ user }: any) => {
+const SideNavTopSection = ({ user, setActiveTeamInfo }: { user: any, setActiveTeamInfo: (team: TEAM) => void }) => {
   const menu = [
     {
       id: 1,
@@ -33,7 +33,7 @@ const SideNavTopSection = ({ user }: any) => {
       icon: Settings,
     },
   ];
-  
+
   const convex = useConvex();
   const router = useRouter();
   const [activeTeam, setActiveTeam] = useState<TEAM | null>(null);
@@ -50,10 +50,19 @@ const SideNavTopSection = ({ user }: any) => {
       const result = await convex.query(api.teams.getTeam, { email: user?.email });
       console.log('Query result:', result); // Log the result for debugging
       setTeamList(result); // Set the state to the array of teams
+      if (result.length > 0) {
+        setActiveTeam(result[0]); // Set the first team as active by default
+        setActiveTeamInfo(result[0]);
+      }
     } catch (error) {
       console.error('Error fetching team list:', error);
       setTeamList([]); // Optionally set to an empty array or handle the error state
     }
+  };
+
+  const handleTeamClick = (team: TEAM) => {
+    setActiveTeam(team);
+    setActiveTeamInfo(team);
   };
 
   const onMenuClick = (item: any) => {
@@ -76,7 +85,7 @@ const SideNavTopSection = ({ user }: any) => {
             <h2
               key={index}
               className={`p-2 hover:bg-blue-500 hover:text-white rounded-lg mb-1 cursor-pointer font-medium ${activeTeam?._id === team._id && 'bg-blue-500 text-white'}`}
-              onClick={() => setActiveTeam(team)}
+              onClick={() => handleTeamClick(team)}
             >
               {team.teamName}
             </h2>
