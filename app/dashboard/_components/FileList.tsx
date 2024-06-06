@@ -1,10 +1,18 @@
 'use client'
 import { FileListContext } from '@/app/context/FileListContext'
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
-import { MoreHorizontal } from 'lucide-react'
+import { Archive, MoreHorizontal } from 'lucide-react'
 import moment from 'moment'
 import Image from 'next/image'
 import React, { useContext, useEffect, useState } from 'react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export interface FILE{
   archive : boolean,
@@ -43,7 +51,19 @@ useEffect(()=>{
         <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{file.fileName}</td>
         <td className="whitespace-nowrap px-4 py-2 text-gray-700">{moment(file._creationTime).format('DD MMM YYYY') }</td>
         <td className="whitespace-nowrap px-4 py-2 text-gray-700"><Image src={user?.picture} alt='user' width={30} height={30} className='rounded-full'/></td>
-        <td className="whitespace-nowrap px-4 py-2 text-gray-700"><MoreHorizontal className='cursor-pointer'/></td>
+        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+     
+
+<DropdownMenu>
+  <DropdownMenuTrigger><MoreHorizontal className='cursor-pointer'/></DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuLabel className='flex gap-3'>
+      <Archive className='h-4 w-4 '/> Archieve
+    </DropdownMenuLabel>
+  
+  </DropdownMenuContent>
+</DropdownMenu>
+        </td>
       </tr>)}
 
       
