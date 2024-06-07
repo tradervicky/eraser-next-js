@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useRouter } from 'next/navigation'
 
 export interface FILE{
   archive : boolean,
@@ -28,6 +29,7 @@ const FileList = () => {
 const {fileList_, setFileList_} = useContext(FileListContext)
 const [filelist, setFileList] = useState<any>()
 const {user}:any = useKindeBrowserClient();
+const router = useRouter()
 useEffect(()=>{
   fileList_ && setFileList(fileList_);
   console.log(filelist)
@@ -47,7 +49,9 @@ useEffect(()=>{
 
     <tbody className="divide-y divide-gray-200">
       {filelist && filelist?.map((file:FILE,index:number )=>
-      <tr>
+      <tr className='cursor-pointer odd:bg-gray-50 '
+      onClick={()=>router.push('/workspace/'+file._id)}
+      >
         <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{file.fileName}</td>
         <td className="whitespace-nowrap px-4 py-2 text-gray-700">{moment(file._creationTime).format('DD MMM YYYY') }</td>
         <td className="whitespace-nowrap px-4 py-2 text-gray-700"><Image src={user?.picture} alt='user' width={30} height={30} className='rounded-full'/></td>
